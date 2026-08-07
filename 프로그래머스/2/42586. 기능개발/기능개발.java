@@ -1,30 +1,29 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
         List<Integer> answer = new ArrayList<>();
-        boolean[] isCompleted = new boolean[progresses.length];
+        Deque<Integer> queue = new ArrayDeque<>();
 
         for (int i = 0; i < progresses.length; i++) {
-            
-            if(isCompleted[i]) continue; // 완료된 거면 다음 걸로
-            
-            isCompleted[i] = true;
-            int day = getDay(progresses[i], speeds[i]);
-            int unit = 0;
-            
-            for (int j = i; j < progresses.length; j++) {
-                if(day >= getDay(progresses[j], speeds[j])) {
-                    isCompleted[j] = true;
-                    unit++;
-                } else {
-                    break;
-                }
-            }
-            answer.add(unit);
-            
+            queue.add(getDay(progresses[i], speeds[i]));
         }
+
+        int temp = queue.peek();
+        int unit = 0;
+        while(!queue.isEmpty()) {
+            if(queue.peek() <= temp) {
+                queue.poll();
+                unit++;
+            } else {
+                temp = queue.peek();
+                answer.add(unit);
+                unit = 0;
+            }
+        }
+        answer.add(unit);
+
+
         return answer.stream()
                 .mapToInt(n -> n)
                 .toArray();
