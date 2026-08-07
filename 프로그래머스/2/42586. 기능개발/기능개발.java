@@ -3,33 +3,33 @@ import java.util.*;
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
         List<Integer> answer = new ArrayList<>();
-        Deque<Integer> queue = new ArrayDeque<>();
-
-        for (int i = 0; i < progresses.length; i++) {
-            queue.add(getDay(progresses[i], speeds[i]));
+        
+        int n = progresses.length;
+        int[] days = new int[n];
+        for (int i = 0; i < n; i++) {
+            days[i] = getDay(progresses[i], speeds[i]);
         }
 
-        int temp = queue.peek();
-        int unit = 0;
-        while(!queue.isEmpty()) {
-            if(queue.peek() <= temp) {
-                queue.poll();
-                unit++;
+        int firstDeployDay = days[0];
+        int count = 0;
+
+        for (int day : days) {
+            if (day <= firstDeployDay) {
+                count++;
             } else {
-                temp = queue.peek();
-                answer.add(unit);
-                unit = 0;
+                answer.add(count);
+                firstDeployDay = day;
+                count = 1;
             }
         }
-        answer.add(unit);
-
+        answer.add(count);
 
         return answer.stream()
-                .mapToInt(n -> n)
+                .mapToInt(Integer::intValue)
                 .toArray();
     }
 
-    public int getDay(int progress, int speed) {
+    private int getDay(int progress, int speed) {
         return (int) Math.ceil((100.0 - progress) / speed);
     }
 }
