@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 class Solution {
     public String[] solution(String[] files) {
@@ -17,26 +19,16 @@ class Solution {
     }
 
     public File encoding(int num, String file) {
-        boolean isHead = true;
-        boolean isTail = false;
-        StringBuilder head = new StringBuilder();
-        StringBuilder number = new StringBuilder();
-        StringBuilder tail = new StringBuilder();
-
-        for (char c : file.toCharArray()) {
-            if (isTail) {
-                tail.append(c);
-            } else if (c >= '0' && c <= '9') {
-                isHead = false;
-                number.append(c);
-            } else if (isHead) {
-                head.append(c);
-            } else {
-                isTail = true;
-                tail.append(c);
-            }
+        Pattern pattern = Pattern.compile("^(\\D*)(\\d+)(.*)");
+        Matcher matcher = pattern.matcher(file);
+        if (matcher.matches()) {
+            String head = matcher.group(1);
+            String number = matcher.group(2);
+            String tail = matcher.group(3);
+            return new File(num, head, number, tail);
+        } else {
+            throw new RuntimeException("잘못된 파일 형식입니다.");
         }
-        return new File(num, head.toString(), number.toString(), tail.toString());
     }
 
     public String decoding(File file) {
