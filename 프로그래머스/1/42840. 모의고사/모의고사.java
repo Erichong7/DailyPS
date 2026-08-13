@@ -7,41 +7,25 @@ class Solution {
         int[] two = { 2, 1, 2, 3, 2, 4, 2, 5 };
         int[] three = { 3, 3, 1, 1, 2, 2, 4, 4, 5, 5 };
 
-        int oneScore = 0;
-        int twoScore = 0;
-        int threeScore = 0;
+        int[] hit = new int[3];
 
         for (int i = 0; i < answers.length; i++) {
             if (answers[i] == one[i % one.length]) {
-                oneScore++;
+                hit[0]++;
             }
             if (answers[i] == two[i % two.length]) {
-                twoScore++;
+                hit[1]++;
             }
             if (answers[i] == three[i % three.length]) {
-                threeScore++;
+                hit[2]++;
             }
         }
-
-        if (oneScore > twoScore && oneScore > threeScore) {
-            answer.add(1);
-        } else if (twoScore > threeScore && twoScore > oneScore) {
-            answer.add(2);
-        } else if (threeScore > oneScore && threeScore > twoScore) {
-            answer.add(3);
-        } else if (oneScore == twoScore && oneScore == threeScore) {
-            answer.add(1);
-            answer.add(2);
-            answer.add(3);
-        } else if (oneScore == twoScore) {
-            answer.add(1);
-            answer.add(2);
-        } else if (twoScore == threeScore) {
-            answer.add(2);
-            answer.add(3);
-        } else {
-            answer.add(1);
-            answer.add(3);
+        
+        int max = Math.max(hit[0], Math.max(hit[1], hit[2]));
+        for (int i = 0; i < hit.length; i++) {
+            if (hit[i] == max) {
+                answer.add(i + 1);
+            }
         }
         return answer.stream().mapToInt(Integer::intValue).toArray();
     }
