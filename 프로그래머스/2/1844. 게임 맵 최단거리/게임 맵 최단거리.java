@@ -19,14 +19,14 @@ class Solution {
 
         while (!queue.isEmpty()) {
             int[] pos = queue.poll();
-            if (pos[0] == n - 1 && pos[1] == m - 1) {
+            if (pos[0] == m - 1 && pos[1] == n - 1) {
                 return pos[2];
             }
             for (int i = 0; i < 4; i++) {
-                int x = pos[1] + dx[i];
-                int y = pos[0] + dy[i];
+                int x = pos[0] + dx[i];
+                int y = pos[1] + dy[i];
                 if (x >= 0 && x < m && y >= 0 && y < n && !visited[y][x] && maps[y][x] == 1) {
-                    queue.offer(new int[]{ y, x, pos[2] + 1 });
+                    queue.offer(new int[]{ x, y, pos[2] + 1 });
                     visited[y][x] = true;
                 }
             }
